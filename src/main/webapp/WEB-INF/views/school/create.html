@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create -school</title>
+</head>
+<body>
+<h1>Create - school</h1>
+<p>
+    <a href="/schools"> Back list</a>
+</p>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form th:object="${school}" th:action="@{/create-school}" method="post">
+    <fieldset>
+        <legend> Create School
+        </legend>
+        <td>Name: </td>
+        <label><input type="text" th:field="*{name}"></label>
+        <th>
+            <input type="submit" value="Save">
+        </th>
+    </fieldset>
+</form>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+</head>
+<body>
+<h1> Create Student</h1>
+<p>
+    <a href="/students"> List </a>
+</p>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form method="post" action="/create" th:object="${student}">
+<fieldset>
+    <legend> Create </legend>
+    <table>
+        <tr>
+            <td>FistName</td>
+            <td><input type="text" th:field="*{firstname}"></td>
+        </tr>
+        <tr>
+            <td>LastName</td>
+            <td><input type="text" th:field="*{lastname}"></td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td><input type="text" th:field="*{age}"></td>
+        </tr>
+        <tr>
+            <td>School:</td>
+            <td>
+                <select th:field="*{school}">
+                    <option th:each="p: ${school}" th:value="${p.id}" th:text="${p.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Save"></td>
+        </tr>
+    </table>
+</fieldset>
+</form>
+</body>
+</html>

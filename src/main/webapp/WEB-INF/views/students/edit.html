@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+<h1> Edit Student</h1>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form method="post" action="/edit-student" th:object="${student}">
+    <input type="hidden" name="id" th:field="*{id}">
+    <fieldset>
+        <legend> Information Students</legend>
+        <tr>
+            <td>Firstname</td>
+            <td><input type="text" th:field="*{firstname}"/></td>
+        </tr>
+        <tr>
+            <td>LastName</td>
+            <td><input type="text" th:field="*{lastname}"></td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td><input type="text" th:field="*{age}"></td>
+        </tr>
+        <tr>
+            <td>School:</td>
+            <td>
+                <select name="school">
+                    <option th:each="p : ${school}"
+                            th:value="${p.id}"
+                            th:text="${p.name}"
+                            th:selected="(${p.id} == *{school.id})"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Save"></td>
+        </tr>
+    </fieldset>
+</form>
+<a href="/students">Back list</a>
+</body>
+</html>
