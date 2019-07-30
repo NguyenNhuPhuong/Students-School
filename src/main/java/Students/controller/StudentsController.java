@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,17 +25,17 @@ public class StudentsController {
     private ServiceSchool serviceSchool;
 
     @ModelAttribute("school")
-    public Iterable<School> schools(){
+    public Iterable<School> schools() {
         return serviceSchool.findAll();
     }
 
     @GetMapping("/students")
-    public ModelAndView list(@RequestParam("s")Optional<String> s, Pageable pageable){
+    public ModelAndView list(@RequestParam("s") Optional<String> s, Pageable pageable) {
 
         Page<Students> students;
-        if(s.isPresent()){
-            students = serviceStudents.findAllByFirstNameContaining(s.get(),pageable);
-        }else{
+        if (s.isPresent()) {
+            students = serviceStudents.findAllByFirstNameContaining(s.get(), pageable);
+        } else {
             students = serviceStudents.findAll(pageable);
         }
         ModelAndView modelAndView = new ModelAndView("students/list");
@@ -42,13 +44,18 @@ public class StudentsController {
     }
 
     @GetMapping("/create-student")
-    public ModelAndView showForm(){
+    public ModelAndView showForm() {
         ModelAndView modelAndView = new ModelAndView("students/create");
         modelAndView.addObject("student", new Students());
         return modelAndView;
     }
+
     @PostMapping("/create")
-    public ModelAndView save(@ModelAttribute ("student") Students students){
+    public ModelAndView save(@Validated @ModelAttribute("student") Students students, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("students/create");
+            return modelAndView;
+        }
         serviceStudents.save(students);
 
         ModelAndView modelAndView = new ModelAndView("students/create");
@@ -58,39 +65,46 @@ public class StudentsController {
     }
 
     @GetMapping("/edit-student/{id}")
-    public ModelAndView showEdit(@PathVariable Long id){
+    public ModelAndView showEdit(@PathVariable Long id) {
         Students student = serviceStudents.findById(id);
-        if(student != null){
+        if (student != null) {
             ModelAndView modelAndView = new ModelAndView("students/edit");
-            modelAndView.addObject("student",student);
+            modelAndView.addObject("student", student);
             return modelAndView;
-        }else{
+        } else {
             ModelAndView modelAndView = new ModelAndView("students/error");
             return modelAndView;
         }
     }
+
     @PostMapping("/edit-student")
-    public ModelAndView Update(@ModelAttribute ("student") Students students){
+    public ModelAndView Update(@Validated @ModelAttribute("student") Students students, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors()){
+            ModelAndView modelAndView = new ModelAndView("students/edit");
+            return modelAndView;
+        }
         serviceStudents.save(students);
         ModelAndView modelAndView = new ModelAndView("students/edit");
-        modelAndView.addObject("students",students);
-        modelAndView.addObject("message","Update successfully");
+        modelAndView.addObject("students", students);
+        modelAndView.addObject("message", "Update successfully");
         return modelAndView;
     }
+
     @GetMapping("/delete-student/{id}")
-    public ModelAndView Delete(@PathVariable Long id){
+    public ModelAndView Delete(@PathVariable Long id) {
         Students student = serviceStudents.findById(id);
-        if(student != null){
+        if (student != null) {
             ModelAndView modelAndView = new ModelAndView("students/delete");
             modelAndView.addObject("student", student);
             return modelAndView;
-        }else{
+        } else {
             ModelAndView modelAndView = new ModelAndView("students/error");
             return modelAndView;
         }
     }
+
     @PostMapping("/delete-student")
-    public String delete(@ModelAttribute ("student") Students students){
+    public String delete(@ModelAttribute("student") Students students) {
         serviceStudents.remove(students.getId());
         return "redirect:students";
     }

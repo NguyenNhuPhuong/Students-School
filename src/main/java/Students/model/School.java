@@ -11,8 +11,8 @@ import java.util.List;
 @Component
 public class School {
 
-//    @NotEmpty
-//    @Size(min = 3,max = 50)
+    @NotEmpty
+    @Size(min = 3,max = 180)
     private String name;
 
     @Id

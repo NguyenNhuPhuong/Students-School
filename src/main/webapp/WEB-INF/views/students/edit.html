@@ -16,14 +16,17 @@
         <tr>
             <td>Firstname</td>
             <td><input type="text" th:field="*{firstname}"/></td>
+            <td th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></td>
         </tr>
         <tr>
             <td>LastName</td>
             <td><input type="text" th:field="*{lastname}"></td>
+            <td th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></td>
         </tr>
         <tr>
             <td>Age</td>
             <td><input type="text" th:field="*{age}"></td>
+            <td th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></td>
         </tr>
         <tr>
             <td>School:</td>

@@ -4,11 +4,15 @@ import Students.model.School;
 import Students.service.ServiceSchool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.naming.Binding;
 
 @Controller
 public class SchoolController {
@@ -34,7 +38,11 @@ public class SchoolController {
     }
 
     @PostMapping("/create-school")
-    public ModelAndView create(@ModelAttribute ("school") School school){
+    public ModelAndView create(@Validated @ModelAttribute ("school") School school, BindingResult bindingResult){
+        if(bindingResult.hasFieldErrors()){
+            ModelAndView modelAndView = new ModelAndView("school/create");
+            return modelAndView;
+        }
         serviceSchool.save(school);
         ModelAndView modelAndView = new ModelAndView("school/create");
         modelAndView.addObject("message","Successfully");
@@ -55,7 +63,11 @@ public class SchoolController {
         }
     }
     @PostMapping("/edit-school")
-    public ModelAndView Update(@ModelAttribute ("school") School school){
+    public ModelAndView Update(@Validated @ModelAttribute ("school") School school, BindingResult bindingResult){
+        if(bindingResult.hasFieldErrors()){
+            ModelAndView modelAndView = new ModelAndView("school/edit");
+            return modelAndView;
+        }
         serviceSchool.save(school);
         ModelAndView modelAndView = new ModelAndView("school/edit");
         modelAndView.addObject("school",school);

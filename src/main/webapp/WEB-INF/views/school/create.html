@@ -14,10 +14,10 @@
 </th:block>
 <form th:object="${school}" th:action="@{/create-school}" method="post">
     <fieldset>
-        <legend> Create School
-        </legend>
-        <td>Name: </td>
+        <legend> Create School</legend>
+        <td>Name:</td>
         <label><input type="text" th:field="*{name}"></label>
+        <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
         <th>
             <input type="submit" value="Save">
         </th>

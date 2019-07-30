@@ -18,6 +18,7 @@
     <tr>
         <label>Name:</label>
         <label><input type="text" th:field="*{name}"></label>
+        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></label>
     </tr>
     <tr>
         <input type="submit" value="Update">

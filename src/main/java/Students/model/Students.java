@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -18,14 +20,16 @@ public class Students implements Cloneable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotEmpty
-//    @Size(min = 3,max = 128)
+    @NotEmpty
+    @Size(min = 3,max = 128)
     private String firstname;
 
-//    @NotEmpty
-//    @Size(min = 3,max = 256)
+    @NotEmpty
+    @Size(min = 3,max = 256)
     private String lastname;
 
+    @Min(6)
+    @Max(35)
     private int age;
 
     @ManyToOne
